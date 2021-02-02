@@ -188,7 +188,7 @@ If you use multiline logging with raw, it's recommended to json encode the Data 
 * `RETRY_COUNT` - how many times to retry a broken socket (default 10)
 * `ROUTESPATH` - path to routes (default `/mnt/routes`)
 * `SYSLOG_DATA` - datum for data field (default `{{.Data}}`)
-* `SYSLOG_FORMAT` - syslog format to emit, either `rfc3164` or `rfc5424` (default `rfc5424`)
+* `SYSLOG_FORMAT` - syslog format to emit, `legacy`, `rfc3164`, or `rfc5424` (default `rfc5424`; `legacy` refers to the format before limits were introduced)
 * `SYSLOG_HOSTNAME` - datum for hostname field (default `{{.Container.Config.Hostname}}`)
 * `SYSLOG_PID` - datum for pid field (default `{{.Container.State.Pid}}`)
 * `SYSLOG_PRIORITY` - datum for priority field (default `{{.Priority}}`)

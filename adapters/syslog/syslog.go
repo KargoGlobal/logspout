@@ -21,6 +21,7 @@ import (
 )
 
 const (
+	LegacyFormat Format = "legacy"
 	// Rfc5424Format is the modern syslog protocol format. https://tools.ietf.org/html/rfc5424
 	Rfc5424Format Format = "rfc5424"
 	// Rfc3164Format is the legacy BSD syslog protocol format. https://tools.ietf.org/html/rfc3164
@@ -59,6 +60,8 @@ func debug(v ...interface{}) {
 
 func getFormat() (Format, error) {
 	switch s := cfg.GetEnvDefault("SYSLOG_FORMAT", string(defaultFormat)); s {
+	case string(LegacyFormat):
+		return LegacyFormat, nil
 	case string(Rfc5424Format):
 		return Rfc5424Format, nil
 	case string(Rfc3164Format):
@@ -382,6 +385,10 @@ func (m *Message) Render(format Format, tmpl *FieldTemplates) ([]byte, error) {
 
 	buf := new(bytes.Buffer)
 	switch format {
+	case LegacyFormat:
+		fmt.Fprintf(buf, "<%s>1 %s %s %s %s - %s %s\n",
+			priority, timestamp, hostname, tag, pid, structuredData, data,
+		)
 	case Rfc5424Format:
 		// notes from RFC:
 		// - there is no upper limit for the entire message and depends on the transport in use
